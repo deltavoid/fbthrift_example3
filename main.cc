@@ -95,6 +95,7 @@ std::unique_ptr<ThriftServer> newServer(int32_t port)
 // };
 void onReply(int32_t number) {
 	LOG(INFO) << "client: get response " << number;
+	std::this_thread::sleep_for(std::chrono::seconds(1));
 }
 
 void onError(std::exception const& e) {
@@ -141,7 +142,8 @@ int main(int argc, char *argv[]) {
 			.thenError<std::exception>(onError)
 		);
 
-		
+		// std::this_thread::sleep_for(std::chrono::seconds(1));
+
 	}
 
 	collectAll(futs.begin(), futs.end())
