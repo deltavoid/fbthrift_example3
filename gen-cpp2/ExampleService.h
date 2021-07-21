@@ -32,7 +32,6 @@ class ExampleServiceSvAsyncIf {
   virtual ~ExampleServiceSvAsyncIf() {}
   virtual void async_tm_get_number(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback, int32_t number) = 0;
   virtual folly::Future<int32_t> future_get_number(int32_t number) = 0;
-  virtual folly::SemiFuture<int32_t> semifuture_get_number(int32_t number) = 0;
 };
 
 class ExampleServiceAsyncProcessor;
@@ -43,7 +42,6 @@ class ExampleServiceSvIf : public ExampleServiceSvAsyncIf, public apache::thrift
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   virtual int32_t get_number(int32_t /*number*/);
   folly::Future<int32_t> future_get_number(int32_t number) override;
-  folly::SemiFuture<int32_t> semifuture_get_number(int32_t number) override;
   void async_tm_get_number(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback, int32_t number) override;
 };
 
@@ -56,11 +54,12 @@ class ExampleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProc
  public:
   const char* getServiceName() override;
   using BaseAsyncProcessor = void;
+  using HasFrozen2 = std::false_type;
  protected:
   ExampleServiceSvIf* iface_;
   folly::Optional<std::string> getCacheKey(folly::IOBuf* buf, apache::thrift::protocol::PROTOCOL_TYPES protType) override;
  public:
-  void process(std::unique_ptr<apache::thrift::ResponseChannelRequest> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) override;
+  void process(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) override;
  protected:
   bool isOnewayMethod(const folly::IOBuf* buf, const apache::thrift::transport::THeader* header) override;
  private:
@@ -80,13 +79,13 @@ class ExampleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProc
   static const ExampleServiceAsyncProcessor::CompactProtocolProcessMap compactProcessMap_;
  private:
   template <typename ProtocolIn_, typename ProtocolOut_>
-  void _processInThread_get_number(std::unique_ptr<apache::thrift::ResponseChannelRequest> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  void _processInThread_get_number(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <typename ProtocolIn_, typename ProtocolOut_>
-  void process_get_number(std::unique_ptr<apache::thrift::ResponseChannelRequest> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  void process_get_number(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
   static folly::IOBufQueue return_get_number(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
-  static void throw_wrapped_get_number(std::unique_ptr<apache::thrift::ResponseChannelRequest> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
+  static void throw_wrapped_get_number(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
  public:
   ExampleServiceAsyncProcessor(ExampleServiceSvIf* iface) :
       iface_(iface) {}

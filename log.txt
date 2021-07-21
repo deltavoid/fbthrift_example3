@@ -1,0 +1,1 @@
+thrift1 --gen mstch_cpp2 -o ./ --templates /repos/fbthrift/thrift/compiler/generate/templates  ./example.thrift

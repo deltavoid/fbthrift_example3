@@ -20,14 +20,9 @@ int32_t ExampleServiceSvIf::get_number(int32_t /*number*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("get_number");
 }
 
-folly::SemiFuture<int32_t> ExampleServiceSvIf::semifuture_get_number(int32_t number) {
-  return apache::thrift::detail::si::semifuture([&] { return get_number(number); });
-}
-
 folly::Future<int32_t> ExampleServiceSvIf::future_get_number(int32_t number) {
-  return apache::thrift::detail::si::future(semifuture_get_number(number), getThreadManager());
+  return apache::thrift::detail::si::future([&] { return get_number(number); });
 }
-
 
 void ExampleServiceSvIf::async_tm_get_number(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback, int32_t number) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_get_number(number); });
@@ -45,7 +40,7 @@ folly::Optional<std::string> ExampleServiceAsyncProcessor::getCacheKey(folly::IO
   return apache::thrift::detail::ap::get_cache_key(buf, protType, cacheKeyMap_);
 }
 
-void ExampleServiceAsyncProcessor::process(std::unique_ptr<apache::thrift::ResponseChannelRequest> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void ExampleServiceAsyncProcessor::process(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   apache::thrift::detail::ap::process(this, std::move(req), std::move(buf), protType, context, eb, tm);
 }
 

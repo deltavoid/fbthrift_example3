@@ -11,7 +11,6 @@
 #include <folly/io/IOBufQueue.h>
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp/transport/THeader.h>
-#include <thrift/lib/cpp2/gen/client_cpp.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
@@ -24,18 +23,24 @@ typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache:
 
 template <typename Protocol_>
 void ExampleServiceAsyncClient::get_numberT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t number) {
-  auto headerAndReqContext = std::make_shared<apache::thrift::detail::ac::HeaderAndReqContext>();
-  std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
+  struct HeaderAndConnContext {
+    HeaderAndConnContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
+
+    apache::thrift::transport::THeader header;
+    apache::thrift::Cpp2ConnContext connContext;
+  };
+  auto headerAndConnContext = std::make_shared<HeaderAndConnContext>();
+  std::shared_ptr<apache::thrift::transport::THeader> header(headerAndConnContext, &headerAndConnContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
-  headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ExampleService.get_number", &headerAndReqContext->reqContext);
+  headerAndConnContext->connContext.setRequestHeader(header.get());
+  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "ExampleService.get_number", &headerAndConnContext->connContext);
   ExampleService_get_number_pargs args;
   args.get<0>().value = &number;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), std::move(header), channel_.get(), "get_number", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
-  headerAndReqContext->reqContext.setRequestHeader(nullptr);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "get_number", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
+  headerAndConnContext->connContext.setRequestHeader(nullptr);
 }
 
 

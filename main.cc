@@ -8,8 +8,8 @@
 #include <folly/synchronization/Baton.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
-#include <thrift/lib/cpp2/async/RocketClientChannel.h>
-#include <thrift/lib/cpp2/async/RSocketClientChannel.h>
+// #include <thrift/lib/cpp2/async/RocketClientChannel.h>
+// #include <thrift/lib/cpp2/async/RSocketClientChannel.h>
 #include <vector>
 #include "./ExampleHandler.h"
 
@@ -19,8 +19,8 @@ using apache::thrift::ThriftServerAsyncProcessorFactory;
 using apache::thrift::RequestCallback;
 using apache::thrift::ClientReceiveState;
 using apache::thrift::HeaderClientChannel;
-using apache::thrift::RocketClientChannel;
-using apache::thrift::RSocketClientChannel;
+// using apache::thrift::RocketClientChannel;
+// using apache::thrift::RSocketClientChannel;
 using apache::thrift::async::TAsyncSocket;
 using tamvm::cpp2::ExampleHandler;
 using tamvm::cpp2::ExampleServiceAsyncClient;
