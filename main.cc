@@ -28,8 +28,11 @@ TAsyncSocket::UniquePtr getSocket(
     folly::SocketAddress const& addr,
     std::list<std::string> advertizedProtocols = {}) 
 {
+
   TAsyncSocket::UniquePtr sock(new TAsyncSocket(evb, addr));
+
   sock->setZeroCopy(true);
+
   return sock;
 }
 
@@ -37,23 +40,32 @@ static std::unique_ptr<ExampleServiceAsyncClient> newHeaderClient(
     folly::EventBase* evb,
     folly::SocketAddress const& addr) 
 {
+
   auto sock = getSocket(evb, addr);
+
   auto chan = HeaderClientChannel::newChannel(std::move(sock));
+
   chan->setProtocolId(apache::thrift::protocol::T_BINARY_PROTOCOL);
+
   return std::make_unique<ExampleServiceAsyncClient>(std::move(chan));
 }
 
 
 std::unique_ptr<ThriftServer> newServer(int32_t port) 
 {
+
   auto handler = std::make_shared<ExampleHandler>();
+
   auto proc_factory =
-      std::make_shared<ThriftServerAsyncProcessorFactory<ExampleHandler>>(
-          handler);
+      std::make_shared<ThriftServerAsyncProcessorFactory<ExampleHandler>>(handler);
+
   auto server = std::make_unique<ThriftServer>();
+
   // server->setAddress(addr);
   server->setPort(port);
+
   server->setProcessorFactory(proc_factory);
+
   return server;
 }
 
@@ -106,20 +118,39 @@ int main(int argc, char *argv[]) {
 	// enough for socket opening 
 	std::this_thread::sleep_for(std::chrono::milliseconds(50));
 
+
+
 	// create event runloop, to run on this thread
 	folly::EventBase eb;
 	folly::SocketAddress addr("127.0.0.1", thrift_port);
+
 	// creating client
 	auto client = newHeaderClient(&eb, addr);
+
 	std::vector<folly::Future<folly::Unit>> futs;
+
 	for (int32_t i = 10; i < 14; i++) {
+	
 		LOG(INFO) << "client: send number " << i;
+	
 		auto f = client->future_get_number(i);
-		futs.push_back(std::move(f).thenValue(onReply).thenError<std::exception>(onError));
+	
+		futs.push_back(
+			std::move(f)
+			.thenValue(onReply)
+			.thenError<std::exception>(onError)
+		);
+
+		
 	}
-	collectAll(futs.begin(), futs.end()).thenValue([&eb](std::vector<folly::Try<folly::Unit>>&& v){
+
+	collectAll(futs.begin(), futs.end())
+	.thenValue( [&eb](std::vector<folly::Try<folly::Unit>>&& v) {
+
 		LOG(INFO) << "client: received all responses";
+
 		eb.terminateLoopSoon();
+
 	});
 
 	// libevent/epoll loop which keeps main thread from existing.
