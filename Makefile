@@ -25,5 +25,8 @@ run: build
 run_echo: build
 	$(BUILD_DIR)/fbthrift_echo
 
+run_echo_gdb: build	
+	gdb $(BUILD_DIR)/fbthrift_echo
+
 clean:	
 	rm -rf $(BUILD_DIR)
