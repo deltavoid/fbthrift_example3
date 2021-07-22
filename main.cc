@@ -59,6 +59,7 @@ std::unique_ptr<ThriftServer> newServer(int32_t port)
   auto proc_factory =
       std::make_shared<ThriftServerAsyncProcessorFactory<ExampleHandler>>(handler);
 
+
   auto server = std::make_unique<ThriftServer>();
 
   // server->setAddress(addr);
@@ -109,8 +110,11 @@ int main(int argc, char *argv[]) {
 	FLAGS_logtostderr = 1;	
 	folly::init(&argc, &argv);
 		
-	DLOG(INFO) << "main: 2";
+
+
+	
 	// starting server on a separate thread
+	DLOG(INFO) << "main: 2";
 	std::thread server_thread([] {	    
 
 		DLOG(INFO) << "main: 3";
@@ -125,16 +129,16 @@ int main(int argc, char *argv[]) {
 	DLOG(INFO) << "main: 6";
 	server_thread.detach();
 
-
-
-    DLOG(INFO) << "main: 7";
+    
 	// wait for a short while 
 	// enough for socket opening 
+	DLOG(INFO) << "main: 7";
 	std::this_thread::sleep_for(std::chrono::milliseconds(50));
 
 
-    DLOG(INFO) << "main: 8";
+    
 	// create event runloop, to run on this thread
+	DLOG(INFO) << "main: 8";
 	folly::EventBase eb;
 	folly::SocketAddress addr("127.0.0.1", thrift_port);
 
