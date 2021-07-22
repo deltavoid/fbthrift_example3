@@ -1,15 +1,20 @@
 #include <stdio.h>
+
+#include <vector>
+
 #include <glog/logging.h>
+
 #include <folly/init/Init.h>
 #include <folly/portability/GFlags.h>
-#include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <folly/futures/Future.h>
 #include <folly/Unit.h>
 #include <folly/synchronization/Baton.h>
+
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
-#include <vector>
-#include "./ExampleHandler.h"
+
+#include "./EchoHandler.h"
 
 
 using apache::thrift::ThriftServer;
@@ -18,10 +23,13 @@ using apache::thrift::RequestCallback;
 using apache::thrift::ClientReceiveState;
 using apache::thrift::HeaderClientChannel;
 using apache::thrift::async::TAsyncSocket;
-using tamvm::cpp2::ExampleHandler;
-using tamvm::cpp2::ExampleServiceAsyncClient;
 
-constexpr std::int32_t thrift_port = 12999;
+using tamvm::cpp2::EchoHandler;
+using tamvm::cpp2::EchoServiceAsyncClient;
+using tamvm::cpp2::EchoRequest;
+using tamvm::cpp2::EchoResponse;
+
+constexpr std::int32_t thrift_port = 9000;
 
 TAsyncSocket::UniquePtr getSocket(
     folly::EventBase* evb,
@@ -36,7 +44,7 @@ TAsyncSocket::UniquePtr getSocket(
   return sock;
 }
 
-static std::unique_ptr<ExampleServiceAsyncClient> newHeaderClient(
+static std::unique_ptr<EchoServiceAsyncClient> newHeaderClient(
     folly::EventBase* evb,
     folly::SocketAddress const& addr) 
 {
@@ -47,17 +55,17 @@ static std::unique_ptr<ExampleServiceAsyncClient> newHeaderClient(
 
   chan->setProtocolId(apache::thrift::protocol::T_BINARY_PROTOCOL);
 
-  return std::make_unique<ExampleServiceAsyncClient>(std::move(chan));
+  return std::make_unique<EchoServiceAsyncClient>(std::move(chan));
 }
 
 
 std::unique_ptr<ThriftServer> newServer(int32_t port) 
 {
 
-  auto handler = std::make_shared<ExampleHandler>();
+  auto handler = std::make_shared<EchoHandler>();
 
   auto proc_factory =
-      std::make_shared<ThriftServerAsyncProcessorFactory<ExampleHandler>>(handler);
+      std::make_shared<ThriftServerAsyncProcessorFactory<EchoHandler>>(handler);
 
 
   auto server = std::make_unique<ThriftServer>();
@@ -94,8 +102,14 @@ std::unique_ptr<ThriftServer> newServer(int32_t port)
 //   	folly::Baton<>* baton_;
 //   	ClientReceiveState* result_;
 // };
-void onReply(int64_t number) {
-	LOG(INFO) << "client: get response " << number;
+// void onReply(int64_t number) {
+// 	LOG(INFO) << "client: get response " << number;
+// 	std::this_thread::sleep_for(std::chrono::seconds(1));
+// }
+
+void onReply(EchoResponse response) {
+	LOG(INFO) << "client: get response " << response.message;
+
 	std::this_thread::sleep_for(std::chrono::seconds(1));
 }
 
@@ -154,8 +168,13 @@ int main(int argc, char *argv[]) {
         DLOG(INFO) << "main: 11";
 		LOG(INFO) << "client: send number " << i;
 	
-		auto f = client->future_get_number(i);
-	
+		// auto f = client->future_get_number(i);
+
+        EchoRequest request;
+        request.message = "hello";
+
+		auto f = client->future_echo(request);
+
 	    DLOG(INFO) << "main: 12";
 		futs.push_back(
 			std::move(f)

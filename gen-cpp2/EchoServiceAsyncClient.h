@@ -35,23 +35,34 @@ class EchoServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
 
   virtual void echo(std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::tamvm::cpp2::EchoRequest& request);
   virtual void echo(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::tamvm::cpp2::EchoRequest& request);
+
  private:
   virtual void echoImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::tamvm::cpp2::EchoRequest& request);
+
  public:
+
   virtual void sync_echo( ::tamvm::cpp2::EchoResponse& _return, const  ::tamvm::cpp2::EchoRequest& request);
   virtual void sync_echo(apache::thrift::RpcOptions& rpcOptions,  ::tamvm::cpp2::EchoResponse& _return, const  ::tamvm::cpp2::EchoRequest& request);
+
   virtual folly::Future< ::tamvm::cpp2::EchoResponse> future_echo(const  ::tamvm::cpp2::EchoRequest& request);
   virtual folly::SemiFuture< ::tamvm::cpp2::EchoResponse> semifuture_echo(const  ::tamvm::cpp2::EchoRequest& request);
+
   virtual folly::Future< ::tamvm::cpp2::EchoResponse> future_echo(apache::thrift::RpcOptions& rpcOptions, const  ::tamvm::cpp2::EchoRequest& request);
   virtual folly::SemiFuture< ::tamvm::cpp2::EchoResponse> semifuture_echo(apache::thrift::RpcOptions& rpcOptions, const  ::tamvm::cpp2::EchoRequest& request);
+
   virtual folly::Future<std::pair< ::tamvm::cpp2::EchoResponse, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_echo(apache::thrift::RpcOptions& rpcOptions, const  ::tamvm::cpp2::EchoRequest& request);
   virtual folly::SemiFuture<std::pair< ::tamvm::cpp2::EchoResponse, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_echo(apache::thrift::RpcOptions& rpcOptions, const  ::tamvm::cpp2::EchoRequest& request);
+
   virtual void echo(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const  ::tamvm::cpp2::EchoRequest& request);
+
+
   static folly::exception_wrapper recv_wrapped_echo( ::tamvm::cpp2::EchoResponse& _return, ::apache::thrift::ClientReceiveState& state);
   static void recv_echo( ::tamvm::cpp2::EchoResponse& _return, ::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
   virtual void recv_instance_echo( ::tamvm::cpp2::EchoResponse& _return, ::apache::thrift::ClientReceiveState& state);
   virtual folly::exception_wrapper recv_instance_wrapped_echo( ::tamvm::cpp2::EchoResponse& _return, ::apache::thrift::ClientReceiveState& state);
+
+
  private:
   template <typename Protocol_>
   void echoT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::tamvm::cpp2::EchoRequest& request);
