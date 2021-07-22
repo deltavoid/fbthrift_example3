@@ -17,8 +17,128 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
+void TccStructTraits< ::tamvm::cpp2::EchoRequest>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "message") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+}
+void TccStructTraits< ::tamvm::cpp2::EchoResponse>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "message") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+}
 
 } // namespace detail
 } // namespace thrift
 } // namespace apache
 
+namespace tamvm { namespace cpp2 {
+
+EchoRequest::EchoRequest(apache::thrift::FragileConstructor, std::string message__arg) :
+    message(std::move(message__arg)) {
+  __isset.message = true;
+}
+
+void EchoRequest::__clear() {
+  // clear all fields
+  message = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  __isset = {};
+}
+
+bool EchoRequest::operator==(const EchoRequest& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.message == rhs.message)) {
+    return false;
+  }
+  return true;
+}
+
+bool EchoRequest::operator<(const EchoRequest& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.message == rhs.message)) {
+    return lhs.message < rhs.message;
+  }
+  return false;
+}
+
+
+void swap(EchoRequest& a, EchoRequest& b) {
+  using ::std::swap;
+  swap(a.message, b.message);
+  swap(a.__isset, b.__isset);
+}
+
+template void EchoRequest::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t EchoRequest::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t EchoRequest::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t EchoRequest::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void EchoRequest::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t EchoRequest::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t EchoRequest::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t EchoRequest::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}} // tamvm::cpp2
+namespace tamvm { namespace cpp2 {
+
+EchoResponse::EchoResponse(apache::thrift::FragileConstructor, std::string message__arg) :
+    message(std::move(message__arg)) {
+  __isset.message = true;
+}
+
+void EchoResponse::__clear() {
+  // clear all fields
+  message = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  __isset = {};
+}
+
+bool EchoResponse::operator==(const EchoResponse& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.message == rhs.message)) {
+    return false;
+  }
+  return true;
+}
+
+bool EchoResponse::operator<(const EchoResponse& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.message == rhs.message)) {
+    return lhs.message < rhs.message;
+  }
+  return false;
+}
+
+
+void swap(EchoResponse& a, EchoResponse& b) {
+  using ::std::swap;
+  swap(a.message, b.message);
+  swap(a.__isset, b.__isset);
+}
+
+template void EchoResponse::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t EchoResponse::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t EchoResponse::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t EchoResponse::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void EchoResponse::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t EchoResponse::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t EchoResponse::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t EchoResponse::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}} // tamvm::cpp2

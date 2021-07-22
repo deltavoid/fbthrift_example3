@@ -20,8 +20,218 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
+template <>
+struct TccStructTraits< ::tamvm::cpp2::EchoRequest> {
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
+};
+template <>
+struct TccStructTraits< ::tamvm::cpp2::EchoResponse> {
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
+};
 
 } // namespace detail
 } // namespace thrift
 } // namespace apache
 
+namespace tamvm { namespace cpp2 {
+
+template <class Protocol_>
+void EchoRequest::readNoXfer(Protocol_* iprot) {
+  apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
+
+  _readState.readStructBegin(iprot);
+
+  using apache::thrift::TProtocolException;
+
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          0,
+          1,
+          apache::thrift::protocol::T_STRING))) {
+    goto _loop;
+  }
+_readField_message:
+  {
+    iprot->readString(this->message);
+    this->__isset.message = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          1,
+          0,
+          apache::thrift::protocol::T_STOP))) {
+    goto _loop;
+  }
+
+_end:
+  _readState.readStructEnd(iprot);
+
+  return;
+
+_loop:
+  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+    goto _end;
+  }
+  if (iprot->kUsesFieldNames()) {
+    apache::thrift::detail::TccStructTraits<EchoRequest>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+  }
+
+  switch (_readState.fieldId) {
+    case 1:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_STRING)) {
+        goto _readField_message;
+      } else {
+        goto _skip;
+      }
+    }
+    default:
+    {
+_skip:
+      iprot->skip(_readState.fieldType);
+      _readState.readFieldEnd(iprot);
+      _readState.readFieldBeginNoInline(iprot);
+      goto _loop;
+    }
+  }
+}
+
+template <class Protocol_>
+uint32_t EchoRequest::serializedSize(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("EchoRequest");
+  xfer += prot_->serializedFieldSize("message", apache::thrift::protocol::T_STRING, 1);
+  xfer += prot_->serializedSizeString(this->message);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t EchoRequest::serializedSizeZC(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("EchoRequest");
+  xfer += prot_->serializedFieldSize("message", apache::thrift::protocol::T_STRING, 1);
+  xfer += prot_->serializedSizeString(this->message);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t EchoRequest::write(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("EchoRequest");
+  xfer += prot_->writeFieldBegin("message", apache::thrift::protocol::T_STRING, 1);
+  xfer += prot_->writeString(this->message);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
+}
+
+}} // tamvm::cpp2
+namespace tamvm { namespace cpp2 {
+
+template <class Protocol_>
+void EchoResponse::readNoXfer(Protocol_* iprot) {
+  apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
+
+  _readState.readStructBegin(iprot);
+
+  using apache::thrift::TProtocolException;
+
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          0,
+          1,
+          apache::thrift::protocol::T_STRING))) {
+    goto _loop;
+  }
+_readField_message:
+  {
+    iprot->readString(this->message);
+    this->__isset.message = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          1,
+          0,
+          apache::thrift::protocol::T_STOP))) {
+    goto _loop;
+  }
+
+_end:
+  _readState.readStructEnd(iprot);
+
+  return;
+
+_loop:
+  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+    goto _end;
+  }
+  if (iprot->kUsesFieldNames()) {
+    apache::thrift::detail::TccStructTraits<EchoResponse>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+  }
+
+  switch (_readState.fieldId) {
+    case 1:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_STRING)) {
+        goto _readField_message;
+      } else {
+        goto _skip;
+      }
+    }
+    default:
+    {
+_skip:
+      iprot->skip(_readState.fieldType);
+      _readState.readFieldEnd(iprot);
+      _readState.readFieldBeginNoInline(iprot);
+      goto _loop;
+    }
+  }
+}
+
+template <class Protocol_>
+uint32_t EchoResponse::serializedSize(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("EchoResponse");
+  xfer += prot_->serializedFieldSize("message", apache::thrift::protocol::T_STRING, 1);
+  xfer += prot_->serializedSizeString(this->message);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t EchoResponse::serializedSizeZC(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("EchoResponse");
+  xfer += prot_->serializedFieldSize("message", apache::thrift::protocol::T_STRING, 1);
+  xfer += prot_->serializedSizeString(this->message);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t EchoResponse::write(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("EchoResponse");
+  xfer += prot_->writeFieldBegin("message", apache::thrift::protocol::T_STRING, 1);
+  xfer += prot_->writeString(this->message);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
+}
+
+}} // tamvm::cpp2
