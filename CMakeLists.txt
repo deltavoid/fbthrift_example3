@@ -11,7 +11,7 @@ option(USE_O2 "Use -O2 instead of the default -O3" OFF)
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 # set(PATH_TO_FBTHRIFT /fbthrift)
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+# set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 FILE(GLOB FBGEN "./gen-cpp2/*.cpp")
 add_executable(fbthrift_ex
