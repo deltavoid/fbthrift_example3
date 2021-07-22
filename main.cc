@@ -103,39 +103,56 @@ void onError(std::exception const& e) {
 }
 
 int main(int argc, char *argv[]) {
+
+	DLOG(INFO) << "main: 1";
 	LOG(INFO) << "Starting test ...";
 	FLAGS_logtostderr = 1;	
 	folly::init(&argc, &argv);
 		
+	DLOG(INFO) << "main: 2";
 	// starting server on a separate thread
 	std::thread server_thread([] {	    
+
+		DLOG(INFO) << "main: 3";
 	    auto server = newServer(thrift_port);
-	    LOG(INFO) << "server: starts";	    
+	    
+		DLOG(INFO) << "main: 4";
+		LOG(INFO) << "server: starts";	    
 		server->serve();
+
+		DLOG(INFO) << "main: 5";
 	});
+	DLOG(INFO) << "main: 6";
 	server_thread.detach();
 
+
+
+    DLOG(INFO) << "main: 7";
 	// wait for a short while 
 	// enough for socket opening 
 	std::this_thread::sleep_for(std::chrono::milliseconds(50));
 
 
-
+    DLOG(INFO) << "main: 8";
 	// create event runloop, to run on this thread
 	folly::EventBase eb;
 	folly::SocketAddress addr("127.0.0.1", thrift_port);
 
+
+    DLOG(INFO) << "main: 9";
 	// creating client
 	auto client = newHeaderClient(&eb, addr);
 
+    DLOG(INFO) << "main: 10";
 	std::vector<folly::Future<folly::Unit>> futs;
-
 	for (int32_t i = 10; i < 14; i++) {
 	
+        DLOG(INFO) << "main: 11";
 		LOG(INFO) << "client: send number " << i;
 	
 		auto f = client->future_get_number(i);
 	
+	    DLOG(INFO) << "main: 12";
 		futs.push_back(
 			std::move(f)
 			.thenValue(onReply)
@@ -146,17 +163,23 @@ int main(int argc, char *argv[]) {
 
 	}
 
+    DLOG(INFO) << "main: 13";
 	collectAll(futs.begin(), futs.end())
 	.thenValue( [&eb](std::vector<folly::Try<folly::Unit>>&& v) {
 
+        DLOG(INFO) << "main: 14";
 		LOG(INFO) << "client: received all responses";
 
 		eb.terminateLoopSoon();
 
+		DLOG(INFO) << "main: 15";
 	});
 
+    DLOG(INFO) << "main: 16";
 	// libevent/epoll loop which keeps main thread from existing.
 	eb.loopForever();
 	
+
+	DLOG(INFO) << "main: 17";
 	return 0;
 }
