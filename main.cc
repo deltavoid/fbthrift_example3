@@ -94,7 +94,7 @@ std::unique_ptr<ThriftServer> newServer(int32_t port)
 //   	folly::Baton<>* baton_;
 //   	ClientReceiveState* result_;
 // };
-void onReply(int32_t number) {
+void onReply(int64_t number) {
 	LOG(INFO) << "client: get response " << number;
 	std::this_thread::sleep_for(std::chrono::seconds(1));
 }

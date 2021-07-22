@@ -38,20 +38,20 @@ class ExampleServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  private:
   virtual void get_numberImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t number);
  public:
-  virtual int32_t sync_get_number(int32_t number);
-  virtual int32_t sync_get_number(apache::thrift::RpcOptions& rpcOptions, int32_t number);
-  virtual folly::Future<int32_t> future_get_number(int32_t number);
-  virtual folly::SemiFuture<int32_t> semifuture_get_number(int32_t number);
-  virtual folly::Future<int32_t> future_get_number(apache::thrift::RpcOptions& rpcOptions, int32_t number);
-  virtual folly::SemiFuture<int32_t> semifuture_get_number(apache::thrift::RpcOptions& rpcOptions, int32_t number);
-  virtual folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_get_number(apache::thrift::RpcOptions& rpcOptions, int32_t number);
-  virtual folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_get_number(apache::thrift::RpcOptions& rpcOptions, int32_t number);
+  virtual int64_t sync_get_number(int32_t number);
+  virtual int64_t sync_get_number(apache::thrift::RpcOptions& rpcOptions, int32_t number);
+  virtual folly::Future<int64_t> future_get_number(int32_t number);
+  virtual folly::SemiFuture<int64_t> semifuture_get_number(int32_t number);
+  virtual folly::Future<int64_t> future_get_number(apache::thrift::RpcOptions& rpcOptions, int32_t number);
+  virtual folly::SemiFuture<int64_t> semifuture_get_number(apache::thrift::RpcOptions& rpcOptions, int32_t number);
+  virtual folly::Future<std::pair<int64_t, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_get_number(apache::thrift::RpcOptions& rpcOptions, int32_t number);
+  virtual folly::SemiFuture<std::pair<int64_t, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_get_number(apache::thrift::RpcOptions& rpcOptions, int32_t number);
   virtual void get_number(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int32_t number);
-  static folly::exception_wrapper recv_wrapped_get_number(int32_t& _return, ::apache::thrift::ClientReceiveState& state);
-  static int32_t recv_get_number(::apache::thrift::ClientReceiveState& state);
+  static folly::exception_wrapper recv_wrapped_get_number(int64_t& _return, ::apache::thrift::ClientReceiveState& state);
+  static int64_t recv_get_number(::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
-  virtual int32_t recv_instance_get_number(::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_get_number(int32_t& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual int64_t recv_instance_get_number(::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_get_number(int64_t& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
   void get_numberT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t number);

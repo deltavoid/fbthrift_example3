@@ -30,8 +30,8 @@ namespace tamvm { namespace cpp2 {
 class ExampleServiceSvAsyncIf {
  public:
   virtual ~ExampleServiceSvAsyncIf() {}
-  virtual void async_tm_get_number(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback, int32_t number) = 0;
-  virtual folly::Future<int32_t> future_get_number(int32_t number) = 0;
+  virtual void async_tm_get_number(std::unique_ptr<apache::thrift::HandlerCallback<int64_t>> callback, int32_t number) = 0;
+  virtual folly::Future<int64_t> future_get_number(int32_t number) = 0;
 };
 
 class ExampleServiceAsyncProcessor;
@@ -40,14 +40,14 @@ class ExampleServiceSvIf : public ExampleServiceSvAsyncIf, public apache::thrift
  public:
   typedef ExampleServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
-  virtual int32_t get_number(int32_t /*number*/);
-  folly::Future<int32_t> future_get_number(int32_t number) override;
-  void async_tm_get_number(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback, int32_t number) override;
+  virtual int64_t get_number(int32_t /*number*/);
+  folly::Future<int64_t> future_get_number(int32_t number) override;
+  void async_tm_get_number(std::unique_ptr<apache::thrift::HandlerCallback<int64_t>> callback, int32_t number) override;
 };
 
 class ExampleServiceSvNull : public ExampleServiceSvIf {
  public:
-  int32_t get_number(int32_t /*number*/) override;
+  int64_t get_number(int32_t /*number*/) override;
 };
 
 class ExampleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
@@ -83,7 +83,7 @@ class ExampleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProc
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_get_number(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_get_number(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return);
+  static folly::IOBufQueue return_get_number(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int64_t const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_get_number(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
  public:

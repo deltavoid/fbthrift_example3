@@ -16,19 +16,19 @@ std::unique_ptr<apache::thrift::AsyncProcessor> ExampleServiceSvIf::getProcessor
   return std::make_unique<ExampleServiceAsyncProcessor>(this);
 }
 
-int32_t ExampleServiceSvIf::get_number(int32_t /*number*/) {
+int64_t ExampleServiceSvIf::get_number(int32_t /*number*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("get_number");
 }
 
-folly::Future<int32_t> ExampleServiceSvIf::future_get_number(int32_t number) {
+folly::Future<int64_t> ExampleServiceSvIf::future_get_number(int32_t number) {
   return apache::thrift::detail::si::future([&] { return get_number(number); });
 }
 
-void ExampleServiceSvIf::async_tm_get_number(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback, int32_t number) {
+void ExampleServiceSvIf::async_tm_get_number(std::unique_ptr<apache::thrift::HandlerCallback<int64_t>> callback, int32_t number) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_get_number(number); });
 }
 
-int32_t ExampleServiceSvNull::get_number(int32_t /*number*/) {
+int64_t ExampleServiceSvNull::get_number(int32_t /*number*/) {
   return 0;
 }
 

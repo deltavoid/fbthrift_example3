@@ -19,7 +19,7 @@
 
 namespace tamvm { namespace cpp2 {
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_I32, int32_t*>> ExampleService_get_number_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_I32, int32_t*>> ExampleService_get_number_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_I64, int64_t*>> ExampleService_get_number_presult;
 
 template <typename Protocol_>
 void ExampleServiceAsyncClient::get_numberT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t number) {
@@ -75,12 +75,12 @@ void ExampleServiceAsyncClient::get_numberImpl(bool useSync, apache::thrift::Rpc
   }
 }
 
-int32_t ExampleServiceAsyncClient::sync_get_number(int32_t number) {
+int64_t ExampleServiceAsyncClient::sync_get_number(int32_t number) {
   ::apache::thrift::RpcOptions rpcOptions;
   return sync_get_number(rpcOptions, number);
 }
 
-int32_t ExampleServiceAsyncClient::sync_get_number(apache::thrift::RpcOptions& rpcOptions, int32_t number) {
+int64_t ExampleServiceAsyncClient::sync_get_number(apache::thrift::RpcOptions& rpcOptions, int32_t number) {
   apache::thrift::ClientReceiveState _returnState;
   auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
       &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
@@ -97,40 +97,40 @@ int32_t ExampleServiceAsyncClient::sync_get_number(apache::thrift::RpcOptions& r
   return recv_get_number(_returnState);
 }
 
-folly::Future<int32_t> ExampleServiceAsyncClient::future_get_number(int32_t number) {
+folly::Future<int64_t> ExampleServiceAsyncClient::future_get_number(int32_t number) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_get_number(rpcOptions, number);
 }
 
-folly::SemiFuture<int32_t> ExampleServiceAsyncClient::semifuture_get_number(int32_t number) {
+folly::SemiFuture<int64_t> ExampleServiceAsyncClient::semifuture_get_number(int32_t number) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_get_number(rpcOptions, number);
 }
 
-folly::Future<int32_t> ExampleServiceAsyncClient::future_get_number(apache::thrift::RpcOptions& rpcOptions, int32_t number) {
-  folly::Promise<int32_t> _promise;
+folly::Future<int64_t> ExampleServiceAsyncClient::future_get_number(apache::thrift::RpcOptions& rpcOptions, int32_t number) {
+  folly::Promise<int64_t> _promise;
   auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_get_number, channel_);
+  auto callback = std::make_unique<apache::thrift::FutureCallback<int64_t>>(std::move(_promise), recv_wrapped_get_number, channel_);
   get_number(rpcOptions, std::move(callback), number);
   return _future;
 }
 
-folly::SemiFuture<int32_t> ExampleServiceAsyncClient::semifuture_get_number(apache::thrift::RpcOptions& rpcOptions, int32_t number) {
+folly::SemiFuture<int64_t> ExampleServiceAsyncClient::semifuture_get_number(apache::thrift::RpcOptions& rpcOptions, int32_t number) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_get_number, channel_);
   auto callback = std::move(callbackAndFuture.first);
   get_number(rpcOptions, std::move(callback), number);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> ExampleServiceAsyncClient::header_future_get_number(apache::thrift::RpcOptions& rpcOptions, int32_t number) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
+folly::Future<std::pair<int64_t, std::unique_ptr<apache::thrift::transport::THeader>>> ExampleServiceAsyncClient::header_future_get_number(apache::thrift::RpcOptions& rpcOptions, int32_t number) {
+  folly::Promise<std::pair<int64_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_get_number, channel_);
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<int64_t>>(std::move(_promise), recv_wrapped_get_number, channel_);
   get_number(rpcOptions, std::move(callback), number);
   return _future;
 }
 
-folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> ExampleServiceAsyncClient::header_semifuture_get_number(apache::thrift::RpcOptions& rpcOptions, int32_t number) {
+folly::SemiFuture<std::pair<int64_t, std::unique_ptr<apache::thrift::transport::THeader>>> ExampleServiceAsyncClient::header_semifuture_get_number(apache::thrift::RpcOptions& rpcOptions, int32_t number) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_get_number, channel_);
   auto callback = std::move(callbackAndFuture.first);
   get_number(rpcOptions, std::move(callback), number);
@@ -141,7 +141,7 @@ void ExampleServiceAsyncClient::get_number(folly::Function<void (::apache::thrif
   get_number(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), number);
 }
 
-folly::exception_wrapper ExampleServiceAsyncClient::recv_wrapped_get_number(int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper ExampleServiceAsyncClient::recv_wrapped_get_number(int64_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -171,8 +171,8 @@ folly::exception_wrapper ExampleServiceAsyncClient::recv_wrapped_get_number(int3
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-int32_t ExampleServiceAsyncClient::recv_get_number(::apache::thrift::ClientReceiveState& state) {
-  int32_t _return;
+int64_t ExampleServiceAsyncClient::recv_get_number(::apache::thrift::ClientReceiveState& state) {
+  int64_t _return;
   auto ew = recv_wrapped_get_number(_return, state);
   if (ew) {
     ew.throw_exception();
@@ -180,11 +180,11 @@ int32_t ExampleServiceAsyncClient::recv_get_number(::apache::thrift::ClientRecei
   return _return;
 }
 
-int32_t ExampleServiceAsyncClient::recv_instance_get_number(::apache::thrift::ClientReceiveState& state) {
+int64_t ExampleServiceAsyncClient::recv_instance_get_number(::apache::thrift::ClientReceiveState& state) {
   return recv_get_number(state);
 }
 
-folly::exception_wrapper ExampleServiceAsyncClient::recv_instance_wrapped_get_number(int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper ExampleServiceAsyncClient::recv_instance_wrapped_get_number(int64_t& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_get_number(_return, state);
 }
 

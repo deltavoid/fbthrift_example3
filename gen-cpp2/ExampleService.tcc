@@ -18,7 +18,7 @@
 
 namespace tamvm { namespace cpp2 {
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_I32, int32_t*>> ExampleService_get_number_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_I32, int32_t*>> ExampleService_get_number_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_I64, int64_t*>> ExampleService_get_number_presult;
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ExampleServiceAsyncProcessor::_processInThread_get_number(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
@@ -57,7 +57,7 @@ void ExampleServiceAsyncProcessor::process_get_number(std::unique_ptr<apache::th
       LOG(ERROR) << ex.what() << " in oneway function get_number";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(ctxStack), return_get_number<ProtocolIn_,ProtocolOut_>, throw_wrapped_get_number<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<int64_t>>(std::move(req), std::move(ctxStack), return_get_number<ProtocolIn_,ProtocolOut_>, throw_wrapped_get_number<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -67,10 +67,10 @@ void ExampleServiceAsyncProcessor::process_get_number(std::unique_ptr<apache::th
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue ExampleServiceAsyncProcessor::return_get_number(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return) {
+folly::IOBufQueue ExampleServiceAsyncProcessor::return_get_number(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int64_t const& _return) {
   ProtocolOut_ prot;
   ExampleService_get_number_presult result;
-  result.get<0>().value = const_cast<int32_t*>(&_return);
+  result.get<0>().value = const_cast<int64_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("get_number", &prot, protoSeqId, ctx, result);
 }
