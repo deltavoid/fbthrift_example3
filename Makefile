@@ -4,7 +4,7 @@
 BUILD_DIR:=_build
 
 .PHONY: build run
-default: run
+default: run_echo
 
 
 build: $(BUILD_DIR)/Makefile
@@ -21,6 +21,9 @@ build_thrift:
 
 run: build
 	$(BUILD_DIR)/fbthrift_ex
+
+run_echo: build
+	$(BUILD_DIR)/fbthrift_echo
 
 clean:	
 	rm -rf $(BUILD_DIR)
