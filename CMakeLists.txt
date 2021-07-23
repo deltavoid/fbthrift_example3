@@ -43,7 +43,6 @@ target_link_libraries(fbthrift_echo_service
 
 add_executable(fbthrift_echo
     echo.cc	
-    ${FBGEN}
 )
 target_include_directories(fbthrift_echo 
     PRIVATE 
@@ -52,12 +51,12 @@ target_include_directories(fbthrift_echo
 target_link_libraries(fbthrift_echo
     PUBLIC
         FBThrift::thriftcpp2
+        fbthrift_echo_service
 )
 
 
 add_executable(fbthrift_server
     server.cc	
-    ${FBGEN}
 )
 target_include_directories(fbthrift_server
     PRIVATE 
@@ -66,11 +65,11 @@ target_include_directories(fbthrift_server
 target_link_libraries(fbthrift_server
     PUBLIC
         FBThrift::thriftcpp2
+        fbthrift_echo_service
 )
 
 add_executable(fbthrift_client
     client.cc	
-    ${FBGEN}
 )
 target_include_directories(fbthrift_client
     PRIVATE 
@@ -79,4 +78,5 @@ target_include_directories(fbthrift_client
 target_link_libraries(fbthrift_client
     PUBLIC
         FBThrift::thriftcpp2
+        fbthrift_echo_service
 )
