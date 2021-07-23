@@ -14,7 +14,8 @@ public:
     {
         LOG(INFO) << "server receive: " << request->message;
 
-        response.message = request->message;
+        response.id = request->id;
+        response.message = "world";
 
     }
 

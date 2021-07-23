@@ -28,18 +28,18 @@ find_package(Gflags)
 
 FILE(GLOB FBGEN "./gen-cpp2/*.cpp")
 
-add_executable(fbthrift_ex
-    main.cc	
-    ${FBGEN}
-)
-target_include_directories(fbthrift_ex 
-    PRIVATE 
-        ${CMAKE_CURRENT_SOURCE_DIR}
-)
-target_link_libraries(fbthrift_ex 
-    PUBLIC
-        FBThrift::thriftcpp2
-)
+# add_executable(fbthrift_ex
+#     main.cc	
+#     ${FBGEN}
+# )
+# target_include_directories(fbthrift_ex 
+#     PRIVATE 
+#         ${CMAKE_CURRENT_SOURCE_DIR}
+# )
+# target_link_libraries(fbthrift_ex 
+#     PUBLIC
+#         FBThrift::thriftcpp2
+# )
 
 add_executable(fbthrift_echo
     echo.cc	

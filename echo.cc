@@ -171,7 +171,8 @@ int main(int argc, char *argv[]) {
 		// auto f = client->future_get_number(i);
 
         EchoRequest request;
-        request.message = std::to_string(i);
+		request.id = i;
+        request.message = "hello";
 
 		auto f = client->future_echo(request);
 
