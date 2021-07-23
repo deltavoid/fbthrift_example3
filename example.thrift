@@ -1,10 +1,6 @@
 # example.thrift
 namespace cpp tamvm
 
-// service ExampleService {
-//   i64 get_number(1:i32 number);  
-// }
-
 
 struct EchoRequest {
     1: i32 id,
