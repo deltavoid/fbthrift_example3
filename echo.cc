@@ -108,7 +108,7 @@ std::unique_ptr<ThriftServer> newServer(int32_t port)
 // }
 
 void onReply(EchoResponse response) {
-	LOG(INFO) << "client: get response " << response.message;
+	LOG(INFO) << "client: get response, id: " << response.id << " message: " << response.message;
 
 	std::this_thread::sleep_for(std::chrono::seconds(1));
 }
@@ -166,7 +166,7 @@ int main(int argc, char *argv[]) {
 	for (int32_t i = 10; i < 14; i++) {
 	
         DLOG(INFO) << "main: 11";
-		LOG(INFO) << "client: send number " << i;
+		LOG(INFO) << "client: send request, id: " << i;
 	
 		// auto f = client->future_get_number(i);
 

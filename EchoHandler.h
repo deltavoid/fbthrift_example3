@@ -12,7 +12,7 @@ public:
     void echo( ::tamvm::cpp2::EchoResponse& response, 
             std::unique_ptr< ::tamvm::cpp2::EchoRequest> request) override
     {
-        LOG(INFO) << "server receive: " << request->message;
+        LOG(INFO) << "server receive: id: " << request->id << " message: " << request->message;
 
         response.id = request->id;
         response.message = "world";
