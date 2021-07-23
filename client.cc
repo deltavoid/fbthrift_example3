@@ -127,27 +127,27 @@ int main(int argc, char *argv[]) {
 
 
 	
-	// starting server on a separate thread
-	DLOG(INFO) << "main: 2";
-	std::thread server_thread([] {	    
+	// // starting server on a separate thread
+	// DLOG(INFO) << "main: 2";
+	// std::thread server_thread([] {	    
 
-		DLOG(INFO) << "main: 3";
-	    auto server = newServer(thrift_port);
+	// 	DLOG(INFO) << "main: 3";
+	//     auto server = newServer(thrift_port);
 	    
-		DLOG(INFO) << "main: 4";
-		LOG(INFO) << "server: starts";	    
-		server->serve();
+	// 	DLOG(INFO) << "main: 4";
+	// 	LOG(INFO) << "server: starts";	    
+	// 	server->serve();
 
-		DLOG(INFO) << "main: 5";
-	});
-	DLOG(INFO) << "main: 6";
-	server_thread.detach();
+	// 	DLOG(INFO) << "main: 5";
+	// });
+	// DLOG(INFO) << "main: 6";
+	// server_thread.detach();
 
     
-	// wait for a short while 
-	// enough for socket opening 
-	DLOG(INFO) << "main: 7";
-	std::this_thread::sleep_for(std::chrono::milliseconds(50));
+	// // wait for a short while 
+	// // enough for socket opening 
+	// DLOG(INFO) << "main: 7";
+	// std::this_thread::sleep_for(std::chrono::milliseconds(50));
 
 
     

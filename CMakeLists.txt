@@ -55,3 +55,16 @@ target_link_libraries(fbthrift_server
     PUBLIC
         FBThrift::thriftcpp2
 )
+
+add_executable(fbthrift_client
+    client.cc	
+    ${FBGEN}
+)
+target_include_directories(fbthrift_client
+    PRIVATE 
+        ${CMAKE_CURRENT_SOURCE_DIR}
+)
+target_link_libraries(fbthrift_client
+    PUBLIC
+        FBThrift::thriftcpp2
+)
