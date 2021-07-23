@@ -33,11 +33,17 @@ namespace tamvm { namespace cpp2 {
 class EchoRequest final : private apache::thrift::detail::st::ComparisonOperators<EchoRequest> {
  public:
 
-  EchoRequest() {}
+  EchoRequest() :
+      id(0) {}
   // FragileConstructor for use in initialization lists only.
-  EchoRequest(apache::thrift::FragileConstructor, std::string message__arg);
+  EchoRequest(apache::thrift::FragileConstructor, int32_t id__arg, std::string message__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
+    id = arg.extract();
+    __isset.id = true;
+  }
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
     message = arg.extract();
     __isset.message = true;
   }
@@ -50,13 +56,25 @@ class EchoRequest final : private apache::thrift::detail::st::ComparisonOperator
 
   EchoRequest& operator=(const EchoRequest&) = default;
   void __clear();
+  int32_t id;
   std::string message;
 
   struct __isset {
+    bool id;
     bool message;
   } __isset = {};
   bool operator==(const EchoRequest& rhs) const;
   bool operator<(const EchoRequest& rhs) const;
+
+  int32_t get_id() const {
+    return id;
+  }
+
+  int32_t& set_id(int32_t id_) {
+    id = id_;
+    __isset.id = true;
+    return id;
+  }
 
   const std::string& get_message() const& {
     return message;
@@ -138,11 +156,17 @@ namespace tamvm { namespace cpp2 {
 class EchoResponse final : private apache::thrift::detail::st::ComparisonOperators<EchoResponse> {
  public:
 
-  EchoResponse() {}
+  EchoResponse() :
+      id(0) {}
   // FragileConstructor for use in initialization lists only.
-  EchoResponse(apache::thrift::FragileConstructor, std::string message__arg);
+  EchoResponse(apache::thrift::FragileConstructor, int32_t id__arg, std::string message__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
+    id = arg.extract();
+    __isset.id = true;
+  }
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
     message = arg.extract();
     __isset.message = true;
   }
@@ -155,13 +179,25 @@ class EchoResponse final : private apache::thrift::detail::st::ComparisonOperato
 
   EchoResponse& operator=(const EchoResponse&) = default;
   void __clear();
+  int32_t id;
   std::string message;
 
   struct __isset {
+    bool id;
     bool message;
   } __isset = {};
   bool operator==(const EchoResponse& rhs) const;
   bool operator<(const EchoResponse& rhs) const;
+
+  int32_t get_id() const {
+    return id;
+  }
+
+  int32_t& set_id(int32_t id_) {
+    id = id_;
+    __isset.id = true;
+    return id;
+  }
 
   const std::string& get_message() const& {
     return message;

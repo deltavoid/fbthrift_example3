@@ -54,6 +54,19 @@ void EchoRequest::readNoXfer(Protocol_* iprot) {
           iprot,
           0,
           1,
+          apache::thrift::protocol::T_I32))) {
+    goto _loop;
+  }
+_readField_id:
+  {
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->id);
+    this->__isset.id = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          1,
+          2,
           apache::thrift::protocol::T_STRING))) {
     goto _loop;
   }
@@ -65,7 +78,7 @@ _readField_message:
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
-          1,
+          2,
           0,
           apache::thrift::protocol::T_STOP))) {
     goto _loop;
@@ -86,6 +99,14 @@ _loop:
 
   switch (_readState.fieldId) {
     case 1:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_I32)) {
+        goto _readField_id;
+      } else {
+        goto _skip;
+      }
+    }
+    case 2:
     {
       if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_STRING)) {
         goto _readField_message;
@@ -108,7 +129,9 @@ template <class Protocol_>
 uint32_t EchoRequest::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("EchoRequest");
-  xfer += prot_->serializedFieldSize("message", apache::thrift::protocol::T_STRING, 1);
+  xfer += prot_->serializedFieldSize("id", apache::thrift::protocol::T_I32, 1);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->id);
+  xfer += prot_->serializedFieldSize("message", apache::thrift::protocol::T_STRING, 2);
   xfer += prot_->serializedSizeString(this->message);
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -118,7 +141,9 @@ template <class Protocol_>
 uint32_t EchoRequest::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("EchoRequest");
-  xfer += prot_->serializedFieldSize("message", apache::thrift::protocol::T_STRING, 1);
+  xfer += prot_->serializedFieldSize("id", apache::thrift::protocol::T_I32, 1);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->id);
+  xfer += prot_->serializedFieldSize("message", apache::thrift::protocol::T_STRING, 2);
   xfer += prot_->serializedSizeString(this->message);
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -128,7 +153,10 @@ template <class Protocol_>
 uint32_t EchoRequest::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("EchoRequest");
-  xfer += prot_->writeFieldBegin("message", apache::thrift::protocol::T_STRING, 1);
+  xfer += prot_->writeFieldBegin("id", apache::thrift::protocol::T_I32, 1);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::write(*prot_, this->id);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("message", apache::thrift::protocol::T_STRING, 2);
   xfer += prot_->writeString(this->message);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
@@ -152,6 +180,19 @@ void EchoResponse::readNoXfer(Protocol_* iprot) {
           iprot,
           0,
           1,
+          apache::thrift::protocol::T_I32))) {
+    goto _loop;
+  }
+_readField_id:
+  {
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->id);
+    this->__isset.id = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          1,
+          2,
           apache::thrift::protocol::T_STRING))) {
     goto _loop;
   }
@@ -163,7 +204,7 @@ _readField_message:
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
-          1,
+          2,
           0,
           apache::thrift::protocol::T_STOP))) {
     goto _loop;
@@ -184,6 +225,14 @@ _loop:
 
   switch (_readState.fieldId) {
     case 1:
+    {
+      if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_I32)) {
+        goto _readField_id;
+      } else {
+        goto _skip;
+      }
+    }
+    case 2:
     {
       if (LIKELY(_readState.fieldType == apache::thrift::protocol::T_STRING)) {
         goto _readField_message;
@@ -206,7 +255,9 @@ template <class Protocol_>
 uint32_t EchoResponse::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("EchoResponse");
-  xfer += prot_->serializedFieldSize("message", apache::thrift::protocol::T_STRING, 1);
+  xfer += prot_->serializedFieldSize("id", apache::thrift::protocol::T_I32, 1);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->id);
+  xfer += prot_->serializedFieldSize("message", apache::thrift::protocol::T_STRING, 2);
   xfer += prot_->serializedSizeString(this->message);
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -216,7 +267,9 @@ template <class Protocol_>
 uint32_t EchoResponse::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("EchoResponse");
-  xfer += prot_->serializedFieldSize("message", apache::thrift::protocol::T_STRING, 1);
+  xfer += prot_->serializedFieldSize("id", apache::thrift::protocol::T_I32, 1);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->id);
+  xfer += prot_->serializedFieldSize("message", apache::thrift::protocol::T_STRING, 2);
   xfer += prot_->serializedSizeString(this->message);
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -226,7 +279,10 @@ template <class Protocol_>
 uint32_t EchoResponse::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("EchoResponse");
-  xfer += prot_->writeFieldBegin("message", apache::thrift::protocol::T_STRING, 1);
+  xfer += prot_->writeFieldBegin("id", apache::thrift::protocol::T_I32, 1);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::write(*prot_, this->id);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("message", apache::thrift::protocol::T_STRING, 2);
   xfer += prot_->writeString(this->message);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();

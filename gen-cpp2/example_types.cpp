@@ -22,8 +22,12 @@ void TccStructTraits< ::tamvm::cpp2::EchoRequest>::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-  else if (_fname == "message") {
+  else if (_fname == "id") {
     fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "message") {
+    fid = 2;
     _ftype = apache::thrift::protocol::T_STRING;
   }
 }
@@ -32,8 +36,12 @@ void TccStructTraits< ::tamvm::cpp2::EchoResponse>::translateFieldName(
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
   if (false) {}
-  else if (_fname == "message") {
+  else if (_fname == "id") {
     fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
+  }
+  else if (_fname == "message") {
+    fid = 2;
     _ftype = apache::thrift::protocol::T_STRING;
   }
 }
@@ -44,13 +52,16 @@ void TccStructTraits< ::tamvm::cpp2::EchoResponse>::translateFieldName(
 
 namespace tamvm { namespace cpp2 {
 
-EchoRequest::EchoRequest(apache::thrift::FragileConstructor, std::string message__arg) :
+EchoRequest::EchoRequest(apache::thrift::FragileConstructor, int32_t id__arg, std::string message__arg) :
+    id(std::move(id__arg)),
     message(std::move(message__arg)) {
+  __isset.id = true;
   __isset.message = true;
 }
 
 void EchoRequest::__clear() {
   // clear all fields
+  id = 0;
   message = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   __isset = {};
 }
@@ -59,6 +70,9 @@ bool EchoRequest::operator==(const EchoRequest& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
+  if (!(lhs.id == rhs.id)) {
+    return false;
+  }
   if (!(lhs.message == rhs.message)) {
     return false;
   }
@@ -69,6 +83,9 @@ bool EchoRequest::operator<(const EchoRequest& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
+  if (!(lhs.id == rhs.id)) {
+    return lhs.id < rhs.id;
+  }
   if (!(lhs.message == rhs.message)) {
     return lhs.message < rhs.message;
   }
@@ -78,6 +95,7 @@ bool EchoRequest::operator<(const EchoRequest& rhs) const {
 
 void swap(EchoRequest& a, EchoRequest& b) {
   using ::std::swap;
+  swap(a.id, b.id);
   swap(a.message, b.message);
   swap(a.__isset, b.__isset);
 }
@@ -94,13 +112,16 @@ template uint32_t EchoRequest::serializedSizeZC<>(apache::thrift::CompactProtoco
 }} // tamvm::cpp2
 namespace tamvm { namespace cpp2 {
 
-EchoResponse::EchoResponse(apache::thrift::FragileConstructor, std::string message__arg) :
+EchoResponse::EchoResponse(apache::thrift::FragileConstructor, int32_t id__arg, std::string message__arg) :
+    id(std::move(id__arg)),
     message(std::move(message__arg)) {
+  __isset.id = true;
   __isset.message = true;
 }
 
 void EchoResponse::__clear() {
   // clear all fields
+  id = 0;
   message = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   __isset = {};
 }
@@ -109,6 +130,9 @@ bool EchoResponse::operator==(const EchoResponse& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
+  if (!(lhs.id == rhs.id)) {
+    return false;
+  }
   if (!(lhs.message == rhs.message)) {
     return false;
   }
@@ -119,6 +143,9 @@ bool EchoResponse::operator<(const EchoResponse& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
+  if (!(lhs.id == rhs.id)) {
+    return lhs.id < rhs.id;
+  }
   if (!(lhs.message == rhs.message)) {
     return lhs.message < rhs.message;
   }
@@ -128,6 +155,7 @@ bool EchoResponse::operator<(const EchoResponse& rhs) const {
 
 void swap(EchoResponse& a, EchoResponse& b) {
   using ::std::swap;
+  swap(a.id, b.id);
   swap(a.message, b.message);
   swap(a.__isset, b.__isset);
 }

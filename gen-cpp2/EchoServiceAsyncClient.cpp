@@ -20,7 +20,6 @@
 namespace tamvm { namespace cpp2 {
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_STRUCT,  ::tamvm::cpp2::EchoRequest*>> EchoService_echo_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRUCT,  ::tamvm::cpp2::EchoResponse*>> EchoService_echo_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_STRUCT,  ::tamvm::cpp2::EchoRequest*>> EchoService_oneway_echo_pargs;
 
 template <typename Protocol_>
 void EchoServiceAsyncClient::echoT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::tamvm::cpp2::EchoRequest& request) {
@@ -41,28 +40,6 @@ void EchoServiceAsyncClient::echoT(Protocol_* prot, bool useSync, apache::thrift
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "echo", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
-  headerAndConnContext->connContext.setRequestHeader(nullptr);
-}
-
-template <typename Protocol_>
-void EchoServiceAsyncClient::oneway_echoT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::tamvm::cpp2::EchoRequest& request) {
-  struct HeaderAndConnContext {
-    HeaderAndConnContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
-
-    apache::thrift::transport::THeader header;
-    apache::thrift::Cpp2ConnContext connContext;
-  };
-  auto headerAndConnContext = std::make_shared<HeaderAndConnContext>();
-  std::shared_ptr<apache::thrift::transport::THeader> header(headerAndConnContext, &headerAndConnContext->header);
-  header->setProtocolId(getChannel()->getProtocolId());
-  header->setHeaders(rpcOptions.releaseWriteHeaders());
-  headerAndConnContext->connContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "EchoService.oneway_echo", &headerAndConnContext->connContext);
-  EchoService_oneway_echo_pargs args;
-  args.get<0>().value = const_cast< ::tamvm::cpp2::EchoRequest*>(&request);
-  auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
-  auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "oneway_echo", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, useSync);
   headerAndConnContext->connContext.setRequestHeader(nullptr);
 }
 
@@ -207,76 +184,6 @@ void EchoServiceAsyncClient::recv_instance_echo( ::tamvm::cpp2::EchoResponse& _r
 
 folly::exception_wrapper EchoServiceAsyncClient::recv_instance_wrapped_echo( ::tamvm::cpp2::EchoResponse& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_echo(_return, state);
-}
-
-void EchoServiceAsyncClient::oneway_echo(std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::tamvm::cpp2::EchoRequest& request) {
-  ::apache::thrift::RpcOptions rpcOptions;
-  oneway_echoImpl(false, rpcOptions, std::move(callback), request);
-}
-
-void EchoServiceAsyncClient::oneway_echo(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::tamvm::cpp2::EchoRequest& request) {
-  oneway_echoImpl(false, rpcOptions, std::move(callback), request);
-}
-
-void EchoServiceAsyncClient::oneway_echoImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::tamvm::cpp2::EchoRequest& request) {
-  switch(getChannel()->getProtocolId()) {
-    case apache::thrift::protocol::T_BINARY_PROTOCOL:
-    {
-      apache::thrift::BinaryProtocolWriter writer;
-      oneway_echoT(&writer, useSync, rpcOptions, std::move(callback), request);
-      break;
-    }
-    case apache::thrift::protocol::T_COMPACT_PROTOCOL:
-    {
-      apache::thrift::CompactProtocolWriter writer;
-      oneway_echoT(&writer, useSync, rpcOptions, std::move(callback), request);
-      break;
-    }
-    default:
-    {
-      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
-    }
-  }
-}
-
-void EchoServiceAsyncClient::sync_oneway_echo(const  ::tamvm::cpp2::EchoRequest& request) {
-  ::apache::thrift::RpcOptions rpcOptions;
-  sync_oneway_echo(rpcOptions, request);
-}
-
-void EchoServiceAsyncClient::sync_oneway_echo(apache::thrift::RpcOptions& rpcOptions, const  ::tamvm::cpp2::EchoRequest& request) {
-  apache::thrift::ClientReceiveState _returnState;
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE);
-  oneway_echoImpl(true, rpcOptions, std::move(callback), request);
-}
-
-folly::Future<folly::Unit> EchoServiceAsyncClient::future_oneway_echo(const  ::tamvm::cpp2::EchoRequest& request) {
-  ::apache::thrift::RpcOptions rpcOptions;
-  return future_oneway_echo(rpcOptions, request);
-}
-
-folly::SemiFuture<folly::Unit> EchoServiceAsyncClient::semifuture_oneway_echo(const  ::tamvm::cpp2::EchoRequest& request) {
-  ::apache::thrift::RpcOptions rpcOptions;
-  return semifuture_oneway_echo(rpcOptions, request);
-}
-
-folly::Future<folly::Unit> EchoServiceAsyncClient::future_oneway_echo(apache::thrift::RpcOptions& rpcOptions, const  ::tamvm::cpp2::EchoRequest& request) {
-  folly::Promise<folly::Unit> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::OneWayFutureCallback>(std::move(_promise), channel_);
-  oneway_echo(rpcOptions, std::move(callback), request);
-  return _future;
-}
-
-folly::SemiFuture<folly::Unit> EchoServiceAsyncClient::semifuture_oneway_echo(apache::thrift::RpcOptions& rpcOptions, const  ::tamvm::cpp2::EchoRequest& request) {
-  auto callbackAndFuture = makeOneWaySemiFutureCallback(channel_);
-  auto callback = std::move(callbackAndFuture.first);
-  oneway_echo(rpcOptions, std::move(callback), request);
-  return std::move(callbackAndFuture.second);
-}
-
-void EchoServiceAsyncClient::oneway_echo(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const  ::tamvm::cpp2::EchoRequest& request) {
-  oneway_echo(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), request);
 }
 
 }} // tamvm::cpp2

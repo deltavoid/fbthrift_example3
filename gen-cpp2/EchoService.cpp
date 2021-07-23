@@ -28,21 +28,7 @@ void EchoServiceSvIf::async_tm_echo(std::unique_ptr<apache::thrift::HandlerCallb
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_echo(std::move(request)); });
 }
 
-void EchoServiceSvIf::oneway_echo(std::unique_ptr< ::tamvm::cpp2::EchoRequest> /*request*/) {
-  apache::thrift::detail::si::throw_app_exn_unimplemented("oneway_echo");
-}
-
-folly::Future<folly::Unit> EchoServiceSvIf::future_oneway_echo(std::unique_ptr< ::tamvm::cpp2::EchoRequest> request) {
-  return apache::thrift::detail::si::future([&] { return oneway_echo(std::move(request)); });
-}
-
-void EchoServiceSvIf::async_tm_oneway_echo(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, std::unique_ptr< ::tamvm::cpp2::EchoRequest> request) {
-  apache::thrift::detail::si::async_tm_oneway(this, std::move(callback), [&] { return future_oneway_echo(std::move(request)); });
-}
-
 void EchoServiceSvNull::echo( ::tamvm::cpp2::EchoResponse& /*_return*/, std::unique_ptr< ::tamvm::cpp2::EchoRequest> /*request*/) {}
-
-void EchoServiceSvNull::oneway_echo(std::unique_ptr< ::tamvm::cpp2::EchoRequest> /*request*/) {}
 
 const char* EchoServiceAsyncProcessor::getServiceName() {
   return "EchoService";
@@ -60,9 +46,7 @@ bool EchoServiceAsyncProcessor::isOnewayMethod(const folly::IOBuf* buf, const ap
   return apache::thrift::detail::ap::is_oneway_method(buf, header, onewayMethods_);
 }
 
-std::unordered_set<std::string> EchoServiceAsyncProcessor::onewayMethods_ {
-  "oneway_echo"
-};
+std::unordered_set<std::string> EchoServiceAsyncProcessor::onewayMethods_ {};
 std::unordered_map<std::string, int16_t> EchoServiceAsyncProcessor::cacheKeyMap_ {};
 const EchoServiceAsyncProcessor::BinaryProtocolProcessMap& EchoServiceAsyncProcessor::getBinaryProtocolProcessMap() {
   return binaryProcessMap_;
@@ -70,7 +54,6 @@ const EchoServiceAsyncProcessor::BinaryProtocolProcessMap& EchoServiceAsyncProce
 
 const EchoServiceAsyncProcessor::BinaryProtocolProcessMap EchoServiceAsyncProcessor::binaryProcessMap_ {
   {"echo", &EchoServiceAsyncProcessor::_processInThread_echo<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"oneway_echo", &EchoServiceAsyncProcessor::_processInThread_oneway_echo<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
 const EchoServiceAsyncProcessor::CompactProtocolProcessMap& EchoServiceAsyncProcessor::getCompactProtocolProcessMap() {
@@ -79,7 +62,6 @@ const EchoServiceAsyncProcessor::CompactProtocolProcessMap& EchoServiceAsyncProc
 
 const EchoServiceAsyncProcessor::CompactProtocolProcessMap EchoServiceAsyncProcessor::compactProcessMap_ {
   {"echo", &EchoServiceAsyncProcessor::_processInThread_echo<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"oneway_echo", &EchoServiceAsyncProcessor::_processInThread_oneway_echo<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 };
 
 }} // tamvm::cpp2

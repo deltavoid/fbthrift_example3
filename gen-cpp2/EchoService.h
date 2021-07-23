@@ -32,8 +32,6 @@ class EchoServiceSvAsyncIf {
   virtual ~EchoServiceSvAsyncIf() {}
   virtual void async_tm_echo(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::tamvm::cpp2::EchoResponse>>> callback, std::unique_ptr< ::tamvm::cpp2::EchoRequest> request) = 0;
   virtual folly::Future<std::unique_ptr< ::tamvm::cpp2::EchoResponse>> future_echo(std::unique_ptr< ::tamvm::cpp2::EchoRequest> request) = 0;
-  virtual void async_tm_oneway_echo(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, std::unique_ptr< ::tamvm::cpp2::EchoRequest> request) = 0;
-  virtual folly::Future<folly::Unit> future_oneway_echo(std::unique_ptr< ::tamvm::cpp2::EchoRequest> request) = 0;
 };
 
 class EchoServiceAsyncProcessor;
@@ -42,23 +40,14 @@ class EchoServiceSvIf : public EchoServiceSvAsyncIf, public apache::thrift::Serv
  public:
   typedef EchoServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
-
   virtual void echo( ::tamvm::cpp2::EchoResponse& /*_return*/, std::unique_ptr< ::tamvm::cpp2::EchoRequest> /*request*/);
-
   folly::Future<std::unique_ptr< ::tamvm::cpp2::EchoResponse>> future_echo(std::unique_ptr< ::tamvm::cpp2::EchoRequest> request) override;
-
   void async_tm_echo(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::tamvm::cpp2::EchoResponse>>> callback, std::unique_ptr< ::tamvm::cpp2::EchoRequest> request) override;
-
-  virtual void oneway_echo(std::unique_ptr< ::tamvm::cpp2::EchoRequest> /*request*/);
-  folly::Future<folly::Unit> future_oneway_echo(std::unique_ptr< ::tamvm::cpp2::EchoRequest> request) override;
-  void async_tm_oneway_echo(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, std::unique_ptr< ::tamvm::cpp2::EchoRequest> request) override;
-
 };
 
 class EchoServiceSvNull : public EchoServiceSvIf {
  public:
   void echo( ::tamvm::cpp2::EchoResponse& /*_return*/, std::unique_ptr< ::tamvm::cpp2::EchoRequest> /*request*/) override;
-  void oneway_echo(std::unique_ptr< ::tamvm::cpp2::EchoRequest> /*request*/) override;
 };
 
 class EchoServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
@@ -97,10 +86,6 @@ class EchoServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcess
   static folly::IOBufQueue return_echo(int32_t protoSeqId, apache::thrift::ContextStack* ctx,  ::tamvm::cpp2::EchoResponse const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_echo(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
-  template <typename ProtocolIn_, typename ProtocolOut_>
-  void _processInThread_oneway_echo(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
-  template <typename ProtocolIn_, typename ProtocolOut_>
-  void process_oneway_echo(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
  public:
   EchoServiceAsyncProcessor(EchoServiceSvIf* iface) :
       iface_(iface) {}
