@@ -19,8 +19,8 @@ build_thrift:
 	thrift1 --gen mstch_cpp2 -o ./ --templates /repos/fbthrift/thrift/compiler/generate/templates  ./example.thrift
 
 
-run: build
-	$(BUILD_DIR)/fbthrift_ex
+# run: build
+# 	$(BUILD_DIR)/fbthrift_ex
 
 run_echo: build
 	$(BUILD_DIR)/fbthrift_echo
