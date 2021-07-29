@@ -22,25 +22,45 @@ typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRUCT,  ::tamvm::cpp2::EchoResponse*>> EchoService_echo_presult;
 
 template <typename Protocol_>
-void EchoServiceAsyncClient::echoT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::tamvm::cpp2::EchoRequest& request) {
+void EchoServiceAsyncClient::echoT(Protocol_* prot, bool useSync, 
+    apache::thrift::RpcOptions& rpcOptions, 
+    std::unique_ptr<apache::thrift::RequestCallback> callback, 
+    const  ::tamvm::cpp2::EchoRequest& request) 
+{
+
+  DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncClient::echoT: 1";
   struct HeaderAndConnContext {
     HeaderAndConnContext() : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
 
     apache::thrift::transport::THeader header;
     apache::thrift::Cpp2ConnContext connContext;
   };
+
+  DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncClient::echoT: 2";
   auto headerAndConnContext = std::make_shared<HeaderAndConnContext>();
+
+  DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncClient::echoT: 3";
   std::shared_ptr<apache::thrift::transport::THeader> header(headerAndConnContext, &headerAndConnContext->header);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   headerAndConnContext->connContext.setRequestHeader(header.get());
+
+  DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncClient::echoT: 4";
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "EchoService.echo", &headerAndConnContext->connContext);
+
+  DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncClient::echoT: 5";
   EchoService_echo_pargs args;
   args.get<0>().value = const_cast< ::tamvm::cpp2::EchoRequest*>(&request);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
+
+  DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncClient::echoT: 6";
   apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "echo", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
+
+  DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncClient::echoT: 7";
   headerAndConnContext->connContext.setRequestHeader(nullptr);
+
+  DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncClient::echoT: 8, end";
 }
 
 
@@ -107,11 +127,20 @@ folly::SemiFuture< ::tamvm::cpp2::EchoResponse> EchoServiceAsyncClient::semifutu
   return semifuture_echo(rpcOptions, request);
 }
 
-folly::Future< ::tamvm::cpp2::EchoResponse> EchoServiceAsyncClient::future_echo(apache::thrift::RpcOptions& rpcOptions, const  ::tamvm::cpp2::EchoRequest& request) {
+folly::Future< ::tamvm::cpp2::EchoResponse> EchoServiceAsyncClient::future_echo(
+    apache::thrift::RpcOptions& rpcOptions, 
+    const  ::tamvm::cpp2::EchoRequest& request) 
+{
+
   folly::Promise< ::tamvm::cpp2::EchoResponse> _promise;
+
   auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::FutureCallback< ::tamvm::cpp2::EchoResponse>>(std::move(_promise), recv_wrapped_echo, channel_);
+
+  auto callback = std::make_unique<apache::thrift::FutureCallback< ::tamvm::cpp2::EchoResponse>>(
+      std::move(_promise), recv_wrapped_echo, channel_);
+
   echo(rpcOptions, std::move(callback), request);
+
   return _future;
 }
 
@@ -141,7 +170,12 @@ void EchoServiceAsyncClient::echo(folly::Function<void (::apache::thrift::Client
   echo(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), request);
 }
 
-folly::exception_wrapper EchoServiceAsyncClient::recv_wrapped_echo( ::tamvm::cpp2::EchoResponse& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper EchoServiceAsyncClient::recv_wrapped_echo( 
+    ::tamvm::cpp2::EchoResponse& _return, 
+    ::apache::thrift::ClientReceiveState& state) 
+{
+
+  DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncClient::recv_wrapped_echo: 1";
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -149,17 +183,20 @@ folly::exception_wrapper EchoServiceAsyncClient::recv_wrapped_echo( ::tamvm::cpp
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
+  DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncClient::recv_wrapped_echo: 2";
   using result = EchoService_echo_presult;
   constexpr auto const fname = "echo";
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
+      DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncClient::recv_wrapped_echo: 3";
       apache::thrift::BinaryProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
           fname, &reader, state, _return);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
+      DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncClient::recv_wrapped_echo: 4";
       apache::thrift::CompactProtocolReader reader;
       return apache::thrift::detail::ac::recv_wrapped<result>(
           fname, &reader, state, _return);
@@ -167,6 +204,8 @@ folly::exception_wrapper EchoServiceAsyncClient::recv_wrapped_echo( ::tamvm::cpp
     default:
     {
     }
+
+    DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncClient::recv_wrapped_echo: 5, end";
   }
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
