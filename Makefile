@@ -4,7 +4,7 @@
 BUILD_DIR:=_build
 
 .PHONY: build run
-default: run_echo
+default: build
 
 
 build: $(BUILD_DIR)/Makefile
