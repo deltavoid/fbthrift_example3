@@ -37,10 +37,13 @@ TAsyncSocket::UniquePtr getSocket(
     std::list<std::string> advertizedProtocols = {}) 
 {
 
+  DLOG(INFO) << "getSocket: 1";
   TAsyncSocket::UniquePtr sock(new TAsyncSocket(evb, addr));
 
+  DLOG(INFO) << "getSocket: 2";
   sock->setZeroCopy(true);
 
+  DLOG(INFO) << "getSocket: 3";
   return sock;
 }
 
@@ -48,14 +51,22 @@ static std::unique_ptr<EchoServiceAsyncClient> newHeaderClient(
     folly::EventBase* evb,
     folly::SocketAddress const& addr) 
 {
+  DLOG(INFO) << "newHeaderClient: 1";
 
   auto sock = getSocket(evb, addr);
 
+  DLOG(INFO) << "newHeaderClient: 2";
   auto chan = HeaderClientChannel::newChannel(std::move(sock));
 
+  DLOG(INFO) << "newHeaderClient: 3";
   chan->setProtocolId(apache::thrift::protocol::T_BINARY_PROTOCOL);
 
-  return std::make_unique<EchoServiceAsyncClient>(std::move(chan));
+  DLOG(INFO) << "newHeaderClient: 4";
+  // return std::make_unique<EchoServiceAsyncClient>(std::move(chan));
+  auto ret = std::make_unique<EchoServiceAsyncClient>(std::move(chan));
+
+  DLOG(INFO) << "newHeaderClient: 5";
+  return ret;
 }
 
 
