@@ -16,16 +16,36 @@ std::unique_ptr<apache::thrift::AsyncProcessor> EchoServiceSvIf::getProcessor() 
   return std::make_unique<EchoServiceAsyncProcessor>(this);
 }
 
-void EchoServiceSvIf::echo( ::tamvm::cpp2::EchoResponse& /*_return*/, std::unique_ptr< ::tamvm::cpp2::EchoRequest> /*request*/) {
+void EchoServiceSvIf::echo( ::tamvm::cpp2::EchoResponse& /*_return*/, 
+    std::unique_ptr< ::tamvm::cpp2::EchoRequest> /*request*/)     
+{
   apache::thrift::detail::si::throw_app_exn_unimplemented("echo");
 }
 
-folly::Future<std::unique_ptr< ::tamvm::cpp2::EchoResponse>> EchoServiceSvIf::future_echo(std::unique_ptr< ::tamvm::cpp2::EchoRequest> request) {
-  return apache::thrift::detail::si::future_returning_uptr([&]( ::tamvm::cpp2::EchoResponse& _return) { echo(_return, std::move(request)); });
+folly::Future<std::unique_ptr< ::tamvm::cpp2::EchoResponse>> 
+EchoServiceSvIf::future_echo(std::unique_ptr< ::tamvm::cpp2::EchoRequest> request) 
+{
+
+  DLOG(INFO) << "tamvm::cpp2::EchoServiceSvIf::future_echo: 1, single";
+  return apache::thrift::detail::si::future_returning_uptr([&]( ::tamvm::cpp2::EchoResponse& _return) { 
+    
+    DLOG(INFO) << "tamvm::cpp2::EchoServiceSvIf::future_echo: 2, lambda";
+    echo(_return, std::move(request)); 
+  });
 }
 
-void EchoServiceSvIf::async_tm_echo(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::tamvm::cpp2::EchoResponse>>> callback, std::unique_ptr< ::tamvm::cpp2::EchoRequest> request) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_echo(std::move(request)); });
+void EchoServiceSvIf::async_tm_echo(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::tamvm::cpp2::EchoResponse>>> callback, 
+    std::unique_ptr< ::tamvm::cpp2::EchoRequest> request) 
+{
+
+  DLOG(INFO) << "tamvm::cpp2::EchoServiceSvIf::async_tm_echo: 1";
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { 
+    
+    DLOG(INFO) << "tamvm::cpp2::EchoServiceSvIf::async_tm_echo: 2";
+    return future_echo(std::move(request));
+  });
+
+  DLOG(INFO) << "tamvm::cpp2::EchoServiceSvIf::async_tm_echo: 3, end";
 }
 
 void EchoServiceSvNull::echo( ::tamvm::cpp2::EchoResponse& /*_return*/, std::unique_ptr< ::tamvm::cpp2::EchoRequest> /*request*/) {}

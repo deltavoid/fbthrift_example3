@@ -25,7 +25,13 @@ void EchoServiceAsyncProcessor::_processInThread_echo(std::unique_ptr<apache::th
   processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &EchoServiceAsyncProcessor::process_echo<ProtocolIn_, ProtocolOut_>, this);
 }
 template <typename ProtocolIn_, typename ProtocolOut_>
-void EchoServiceAsyncProcessor::process_echo(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void EchoServiceAsyncProcessor::process_echo(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, 
+    std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,
+    apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, 
+    apache::thrift::concurrency::ThreadManager* tm) 
+{
+
+  DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncProcessor::process_echo: 1";
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
@@ -34,11 +40,16 @@ void EchoServiceAsyncProcessor::process_echo(std::unique_ptr<apache::thrift::Res
   args.get<0>().value = uarg_request.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "EchoService.echo", ctx));
   try {
+
+    DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncProcessor::process_echo: 2";
     deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
   }
   catch (const std::exception& ex) {
+
+    DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncProcessor::process_echo: 3";
     ProtocolOut_ prot;
     if (req) {
+      DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncProcessor::process_echo: 4";
       LOG(ERROR) << ex.what() << " in function echo";
       apache::thrift::TApplicationException x(apache::thrift::TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR, ex.what());
       folly::IOBufQueue queue = serializeException("echo", &prot, ctx->getProtoSeqId(), nullptr, x);
@@ -51,19 +62,29 @@ void EchoServiceAsyncProcessor::process_echo(std::unique_ptr<apache::thrift::Res
         }
       }
       );
+
+      DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncProcessor::process_echo: 5, end";
       return;
     }
     else {
+
+      DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncProcessor::process_echo: 6";
       LOG(ERROR) << ex.what() << " in oneway function echo";
     }
   }
+
+  DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncProcessor::process_echo: 7";
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::tamvm::cpp2::EchoResponse>>>(std::move(req), std::move(ctxStack), return_echo<ProtocolIn_,ProtocolOut_>, throw_wrapped_echo<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
   }
+
+  DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncProcessor::process_echo: 8";
   ctx->setStartedProcessing();
   iface_->async_tm_echo(std::move(callback), std::move(uarg_request));
+
+  DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncProcessor::process_echo: 9";
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
