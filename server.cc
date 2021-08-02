@@ -113,15 +113,15 @@ std::unique_ptr<ThriftServer> newServer(int32_t port)
 // 	std::this_thread::sleep_for(std::chrono::seconds(1));
 // }
 
-void onReply(EchoResponse response) {
-	LOG(INFO) << "client: get response, id: " << response.id << " message: " << response.message;
+// void onReply(EchoResponse response) {
+// 	LOG(INFO) << "client: get response, id: " << response.id << " message: " << response.message;
 
-	std::this_thread::sleep_for(std::chrono::seconds(1));
-}
+// 	std::this_thread::sleep_for(std::chrono::seconds(1));
+// }
 
-void onError(std::exception const& e) {
-	LOG(ERROR) << "client: error: " << e.what();
-}
+// void onError(std::exception const& e) {
+// 	LOG(ERROR) << "client: error: " << e.what();
+// }
 
 int main(int argc, char *argv[]) {
 
