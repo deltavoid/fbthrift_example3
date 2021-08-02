@@ -28,6 +28,9 @@ run_echo_gdb: build
 run_server: build
 	$(BUILD_DIR)/fbthrift_server
 
+run_server_gdb: build
+	gdb $(BUILD_DIR)/fbthrift_server
+
 run_client: build
 	$(BUILD_DIR)/fbthrift_client
 

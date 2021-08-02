@@ -73,6 +73,12 @@ std::unique_ptr<ThriftServer> newServer(int32_t port)
   // server->setAddress(addr);
   server->setPort(port);
 
+  server->setNumIOWorkerThreads(2);
+  // server->setNumCPUWorkerThreads(2);
+
+  DLOG(INFO) << "newServer: getCPUWorkerThreadName: " << server->getCPUWorkerThreadName();
+
+
   server->setProcessorFactory(proc_factory);
 
   return server;
