@@ -31,6 +31,8 @@ EchoServiceSvIf::future_echo(std::unique_ptr< ::tamvm::cpp2::EchoRequest> reques
     
     DLOG(INFO) << "tamvm::cpp2::EchoServiceSvIf::future_echo: 2, lambda";
     echo(_return, std::move(request)); 
+    
+    DLOG(INFO) << "tamvm::cpp2::EchoServiceSvIf::future_echo: 3, lambda end";
   });
 }
 
@@ -42,10 +44,14 @@ void EchoServiceSvIf::async_tm_echo(std::unique_ptr<apache::thrift::HandlerCallb
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { 
     
     DLOG(INFO) << "tamvm::cpp2::EchoServiceSvIf::async_tm_echo: 2";
-    return future_echo(std::move(request));
+    // return future_echo(std::move(request));
+    auto ret = future_echo(std::move(request));
+
+    DLOG(INFO) << "tamvm::cpp2::EchoServiceSvIf::async_tm_echo: 3";
+    return ret;
   });
 
-  DLOG(INFO) << "tamvm::cpp2::EchoServiceSvIf::async_tm_echo: 3, end";
+  DLOG(INFO) << "tamvm::cpp2::EchoServiceSvIf::async_tm_echo: 4, end";
 }
 
 void EchoServiceSvNull::echo( ::tamvm::cpp2::EchoResponse& /*_return*/, std::unique_ptr< ::tamvm::cpp2::EchoRequest> /*request*/) {}
