@@ -20,9 +20,20 @@ namespace tamvm { namespace cpp2 {
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_STRUCT,  ::tamvm::cpp2::EchoRequest*>> EchoService_echo_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRUCT,  ::tamvm::cpp2::EchoResponse*>> EchoService_echo_presult;
 template <typename ProtocolIn_, typename ProtocolOut_>
-void EchoServiceAsyncProcessor::_processInThread_echo(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void EchoServiceAsyncProcessor::_processInThread_echo(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, 
+    std::unique_ptr<folly::IOBuf> buf, 
+    std::unique_ptr<ProtocolIn_> iprot, 
+    apache::thrift::Cpp2RequestContext* ctx, 
+    folly::EventBase* eb, 
+    apache::thrift::concurrency::ThreadManager* tm) 
+{
+  DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncProcessor::_processInThread_echo: 1";
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+
+  DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncProcessor::_processInThread_echo: 2";
   processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &EchoServiceAsyncProcessor::process_echo<ProtocolIn_, ProtocolOut_>, this);
+
+  DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncProcessor::_processInThread_echo: 3, end";
 }
 template <typename ProtocolIn_, typename ProtocolOut_>
 void EchoServiceAsyncProcessor::process_echo(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, 
