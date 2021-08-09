@@ -95,8 +95,14 @@ void EchoServiceAsyncProcessor::process_echo(
 
   DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncProcessor::process_echo: 7";
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::tamvm::cpp2::EchoResponse>>>(
-      std::move(req), std::move(ctxStack), return_echo<ProtocolIn_,ProtocolOut_>, throw_wrapped_echo<ProtocolIn_, ProtocolOut_>, 
-      ctx->getProtoSeqId(), eb, tm, ctx);
+      std::move(req), 
+      std::move(ctxStack), 
+      return_echo<ProtocolIn_,ProtocolOut_>, 
+      throw_wrapped_echo<ProtocolIn_, ProtocolOut_>, 
+      ctx->getProtoSeqId(), 
+      eb, 
+      tm, 
+      ctx);
   
   DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncProcessor::process_echo: 8";
   if (!callback->isRequestActive()) {
