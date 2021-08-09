@@ -17,10 +17,13 @@
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 
 namespace tamvm { namespace cpp2 {
+
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_STRUCT,  ::tamvm::cpp2::EchoRequest*>> EchoService_echo_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRUCT,  ::tamvm::cpp2::EchoResponse*>> EchoService_echo_presult;
+
 template <typename ProtocolIn_, typename ProtocolOut_>
-void EchoServiceAsyncProcessor::_processInThread_echo(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, 
+void EchoServiceAsyncProcessor::_processInThread_echo(
+    std::unique_ptr<apache::thrift::ResponseChannel::Request> req, 
     std::unique_ptr<folly::IOBuf> buf, 
     std::unique_ptr<ProtocolIn_> iprot, 
     apache::thrift::Cpp2RequestContext* ctx, 
@@ -31,14 +34,20 @@ void EchoServiceAsyncProcessor::_processInThread_echo(std::unique_ptr<apache::th
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
 
   DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncProcessor::_processInThread_echo: 2";
-  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &EchoServiceAsyncProcessor::process_echo<ProtocolIn_, ProtocolOut_>, this);
+  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, 
+      apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, 
+      &EchoServiceAsyncProcessor::process_echo<ProtocolIn_, ProtocolOut_>, this);
 
   DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncProcessor::_processInThread_echo: 3, end";
 }
+
 template <typename ProtocolIn_, typename ProtocolOut_>
-void EchoServiceAsyncProcessor::process_echo(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, 
-    std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,
-    apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, 
+void EchoServiceAsyncProcessor::process_echo(
+    std::unique_ptr<apache::thrift::ResponseChannel::Request> req, 
+    std::unique_ptr<folly::IOBuf> buf, 
+    std::unique_ptr<ProtocolIn_> iprot,
+    apache::thrift::Cpp2RequestContext* ctx,
+    folly::EventBase* eb, 
     apache::thrift::concurrency::ThreadManager* tm) 
 {
 
@@ -85,36 +94,65 @@ void EchoServiceAsyncProcessor::process_echo(std::unique_ptr<apache::thrift::Res
   }
 
   DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncProcessor::process_echo: 7";
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::tamvm::cpp2::EchoResponse>>>(std::move(req), std::move(ctxStack), return_echo<ProtocolIn_,ProtocolOut_>, throw_wrapped_echo<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::tamvm::cpp2::EchoResponse>>>(
+      std::move(req), std::move(ctxStack), return_echo<ProtocolIn_,ProtocolOut_>, throw_wrapped_echo<ProtocolIn_, ProtocolOut_>, 
+      ctx->getProtoSeqId(), eb, tm, ctx);
+  
+  DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncProcessor::process_echo: 8";
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
+
+    DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncProcessor::process_echo: 9";
     return;
   }
 
-  DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncProcessor::process_echo: 8";
+  DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncProcessor::process_echo: 10";
   ctx->setStartedProcessing();
   iface_->async_tm_echo(std::move(callback), std::move(uarg_request));
 
-  DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncProcessor::process_echo: 9";
+  DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncProcessor::process_echo: 11";
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue EchoServiceAsyncProcessor::return_echo(int32_t protoSeqId, apache::thrift::ContextStack* ctx,  ::tamvm::cpp2::EchoResponse const& _return) {
+folly::IOBufQueue EchoServiceAsyncProcessor::return_echo(int32_t protoSeqId, apache::thrift::ContextStack* ctx,  
+    ::tamvm::cpp2::EchoResponse const& _return) 
+{
+  DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncProcessor::return_echo: 1";
   ProtocolOut_ prot;
   EchoService_echo_presult result;
+
+  DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncProcessor::return_echo: 2";
   result.get<0>().value = const_cast< ::tamvm::cpp2::EchoResponse*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse("echo", &prot, protoSeqId, ctx, result);
+
+  DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncProcessor::return_echo: 3";
+  // return serializeResponse("echo", &prot, protoSeqId, ctx, result);
+  auto ret = serializeResponse("echo", &prot, protoSeqId, ctx, result);
+
+  DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncProcessor::return_echo: 4";
+  return ret;
+
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-void EchoServiceAsyncProcessor::throw_wrapped_echo(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
+void EchoServiceAsyncProcessor::throw_wrapped_echo(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,
+  int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,
+  apache::thrift::Cpp2RequestContext* reqCtx) 
+{
+  DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncProcessor::throw_wrapped_echo: 1";
   if (!ew) {
+
+    DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncProcessor::throw_wrapped_echo: 2";
     return;
   }
+
+  DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncProcessor::throw_wrapped_echo: 3";
   ProtocolOut_ prot;
-   {
+  {
+    DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncProcessor::throw_wrapped_echo: 4";
     if (req) {
+
+      DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncProcessor::throw_wrapped_echo: 5";
       LOG(ERROR) << ew << " in function echo";
       apache::thrift::TApplicationException x(ew.what().toStdString());
       ctx->userExceptionWrapped(false, ew);
@@ -122,12 +160,18 @@ void EchoServiceAsyncProcessor::throw_wrapped_echo(std::unique_ptr<apache::thrif
       folly::IOBufQueue queue = serializeException("echo", &prot, protoSeqId, ctx, x);
       queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
       req->sendReply(queue.move());
+
+      DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncProcessor::throw_wrapped_echo: 6, end";
       return;
     }
     else {
+
+      DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncProcessor::throw_wrapped_echo: 7";
       LOG(ERROR) << ew << " in oneway function echo";
     }
   }
+
+  DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncProcessor::throw_wrapped_echo: 8, end";
 }
 
 }} // tamvm::cpp2

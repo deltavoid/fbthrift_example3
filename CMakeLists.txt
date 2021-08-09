@@ -43,6 +43,7 @@ target_link_libraries(fbthrift_echo_service
 
 add_executable(fbthrift_echo
     echo.cc	
+    EchoHandler.cpp
 )
 target_include_directories(fbthrift_echo 
     PRIVATE 
@@ -57,6 +58,7 @@ target_link_libraries(fbthrift_echo
 
 add_executable(fbthrift_server
     server.cc	
+    EchoHandler.cpp
 )
 target_include_directories(fbthrift_server
     PRIVATE 

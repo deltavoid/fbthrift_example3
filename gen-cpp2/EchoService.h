@@ -27,6 +27,7 @@ namespace apache { namespace thrift {
 
 namespace tamvm { namespace cpp2 {
 
+
 class EchoServiceSvAsyncIf {
  public:
   virtual ~EchoServiceSvAsyncIf() {}
@@ -49,6 +50,10 @@ class EchoServiceSvNull : public EchoServiceSvIf {
  public:
   void echo( ::tamvm::cpp2::EchoResponse& /*_return*/, std::unique_ptr< ::tamvm::cpp2::EchoRequest> /*request*/) override;
 };
+
+
+
+
 
 class EchoServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
  public:
@@ -88,9 +93,16 @@ class EchoServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcess
   static void throw_wrapped_echo(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
  public:
   EchoServiceAsyncProcessor(EchoServiceSvIf* iface) :
-      iface_(iface) {}
+      iface_(iface) 
+  {
+    _id = ++global_id;
+    DLOG(INFO) << "tamvm::cpp2::EchoServiceAsyncProcessor::EchoServiceAsyncProcessor, _id: " << _id;
+  }
 
   virtual ~EchoServiceAsyncProcessor() {}
+
+  static int global_id;
+  int _id = -1;
 };
 
 }} // tamvm::cpp2

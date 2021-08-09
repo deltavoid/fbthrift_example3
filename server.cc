@@ -62,25 +62,29 @@ static std::unique_ptr<EchoServiceAsyncClient> newHeaderClient(
 std::unique_ptr<ThriftServer> newServer(int32_t port) 
 {
 
+  DLOG(INFO) << "newServer: 1";
   auto handler = std::make_shared<EchoHandler>();
 
+  DLOG(INFO) << "newServer: 2";
   auto proc_factory =
       std::make_shared<ThriftServerAsyncProcessorFactory<EchoHandler>>(handler);
 
-
+  DLOG(INFO) << "newServer: 3";
   auto server = std::make_unique<ThriftServer>();
 
+  DLOG(INFO) << "newServer: 4";
   // server->setAddress(addr);
   server->setPort(port);
 
+  DLOG(INFO) << "newServer: 5";
   server->setNumIOWorkerThreads(2);
   // server->setNumCPUWorkerThreads(2);
-
   DLOG(INFO) << "newServer: getCPUWorkerThreadName: " << server->getCPUWorkerThreadName();
 
-
+  DLOG(INFO) << "newServer: 6";
   server->setProcessorFactory(proc_factory);
 
+  DLOG(INFO) << "newServer: 7";
   return server;
 }
 

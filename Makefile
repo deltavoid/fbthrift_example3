@@ -8,7 +8,7 @@ default: build
 
 
 build: $(BUILD_DIR)/Makefile
-	cd $(BUILD_DIR) && make
+	cd $(BUILD_DIR) && make -j32
 
 $(BUILD_DIR)/Makefile:
 	mkdir -p $(BUILD_DIR)  \

@@ -14,7 +14,8 @@
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 
-#include "./EchoHandler.h"
+// #include "./EchoHandler.h"
+#include "./gen-cpp2/EchoService.h"
 
 
 using apache::thrift::ThriftServer;
@@ -24,7 +25,7 @@ using apache::thrift::ClientReceiveState;
 using apache::thrift::HeaderClientChannel;
 using apache::thrift::async::TAsyncSocket;
 
-using tamvm::cpp2::EchoHandler;
+// using tamvm::cpp2::EchoHandler;
 using tamvm::cpp2::EchoServiceAsyncClient;
 using tamvm::cpp2::EchoRequest;
 using tamvm::cpp2::EchoResponse;
@@ -70,24 +71,24 @@ static std::unique_ptr<EchoServiceAsyncClient> newHeaderClient(
 }
 
 
-std::unique_ptr<ThriftServer> newServer(int32_t port) 
-{
+// std::unique_ptr<ThriftServer> newServer(int32_t port) 
+// {
 
-  auto handler = std::make_shared<EchoHandler>();
+//   auto handler = std::make_shared<EchoHandler>();
 
-  auto proc_factory =
-      std::make_shared<ThriftServerAsyncProcessorFactory<EchoHandler>>(handler);
+//   auto proc_factory =
+//       std::make_shared<ThriftServerAsyncProcessorFactory<EchoHandler>>(handler);
 
 
-  auto server = std::make_unique<ThriftServer>();
+//   auto server = std::make_unique<ThriftServer>();
 
-  // server->setAddress(addr);
-  server->setPort(port);
+//   // server->setAddress(addr);
+//   server->setPort(port);
 
-  server->setProcessorFactory(proc_factory);
+//   server->setProcessorFactory(proc_factory);
 
-  return server;
-}
+//   return server;
+// }
 
 // class AsyncCallback : public apache::thrift::RequestCallback {
 //  public:

@@ -12,7 +12,9 @@
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
 namespace tamvm { namespace cpp2 {
-std::unique_ptr<apache::thrift::AsyncProcessor> EchoServiceSvIf::getProcessor() {
+std::unique_ptr<apache::thrift::AsyncProcessor> EchoServiceSvIf::getProcessor() 
+{
+  DLOG(INFO) << "tamvm::cpp2::EchoServiceSvIf::getProcessor";
   return std::make_unique<EchoServiceAsyncProcessor>(this);
 }
 
@@ -98,6 +100,9 @@ const EchoServiceAsyncProcessor::CompactProtocolProcessMap& EchoServiceAsyncProc
 const EchoServiceAsyncProcessor::CompactProtocolProcessMap EchoServiceAsyncProcessor::compactProcessMap_ {
   {"echo", &EchoServiceAsyncProcessor::_processInThread_echo<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 };
+
+
+int EchoServiceAsyncProcessor::global_id = 0;
 
 }} // tamvm::cpp2
 namespace apache { namespace thrift {
